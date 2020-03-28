@@ -8,7 +8,7 @@ from urllib.request import urlopen
 import json
 
 def main():
-    df = pd.read_csv('~/Desktop/covid-19-data/us-counties.csv')
+    df = pd.read_csv('~/Desktop/louisiana-covid19/covid-19-data/us-counties.csv')
     # df['fips'] = df['fips'].fillna(0)
     df = df[~df['fips'].isna()] ## let's just drop N/As
     df['fips'] = df['fips'].apply(lambda x: int(x))
