@@ -3,7 +3,7 @@ import numpy as np
 import plotly
 import plotly.graph_objects as go
 import plotly.figure_factory as ff
-# import plotly.express as px
+import plotly.express as px
 from urllib.request import urlopen
 import json
 
@@ -13,17 +13,35 @@ def main():
     df = df[~df['fips'].isna()] ## let's just drop N/As
     df['fips'] = df['fips'].apply(lambda x: int(x))
     stateDF = df[df['state'] == 'Louisiana']
-    caddoDF = df[df['county'] == 'Caddo']
-
-    ## Print caddo data
-    # print(caddoDF)
-    print(caddoDF[['date','county','state','cases','deaths']])
+    caddoDF = stateDF[stateDF['county'] == 'Caddo']
+    # print(caddoDF[['date','county','state','cases','deaths']])
 
     ## Make graphs
     drillDownChartBuilder(caddoDF)
     stateCaseVizualizer(stateDF,200)
     stateContinuousCaseVizualizer(stateDF,20,["green",'yellow','orange',"red"])
     stateContinuousCaseVizualizer(df,50,['#313695','#74add1','#e0f3f8','#fee090','#f46d43','#a50026'])
+    caddoLineChart(caddoDF)
+
+def caddoLineChart(caddoDF):
+    currentParish = caddoDF['county'].iloc[[0][0]]
+    # fig = px.line(caddoDF, x="date", y="cases", color='county') ## only showed one at a time, so we went from df-wide style to df-long style
+    df_long=pd.melt(caddoDF, id_vars=['date'], value_vars=['cases', 'deaths'])
+    fig = px.line(df_long, x='date', y='value', color='variable',text='value').update_traces(textposition='top left',textfont_size=12).for_each_trace(lambda t: t.update(name=t.name[9:].capitalize())) 
+                #.update_traces(mode='lines+markers').for_each_trace(lambda t: t.update(name=t.name.replace("=",": ")))
+    fig.update_layout(
+        title="{} Parish Cases and Deaths Overtime".format(currentParish),
+        xaxis_title='Date',
+        yaxis_title='Number of People',
+        ## If I want to disable Automargins
+        # width=1500,
+        # height=1300,
+        font=dict(
+            family="Helvetica, monospace",
+            size=18,
+            color="#7f7f7f")
+    )
+    fig.show()
 
 def drillDownChartBuilder(df):
     mostRecentDate = df['date'].iloc[[-1][0]]
