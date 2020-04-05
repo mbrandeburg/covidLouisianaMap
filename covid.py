@@ -18,10 +18,10 @@ def main():
 
     ## Make graphs
     drillDownChartBuilder(caddoDF)
+    caddoLineChart(caddoDF)
     stateCaseVizualizer(stateDF,200)
     stateContinuousCaseVizualizer(stateDF,20,["green",'yellow','orange',"red"])
     stateContinuousCaseVizualizer(df,50,['#313695','#74add1','#e0f3f8','#fee090','#f46d43','#a50026'])
-    caddoLineChart(caddoDF)
 
 def caddoLineChart(caddoDF):
     currentParish = caddoDF['county'].iloc[[0][0]]
