@@ -6,6 +6,7 @@ import plotly.figure_factory as ff
 import plotly.express as px
 from urllib.request import urlopen
 import json
+import os
 
 def main():
     df = pd.read_csv('~/Desktop/louisiana-covid19/covid-19-data/us-counties.csv')
@@ -103,4 +104,7 @@ def stateContinuousCaseVizualizer(df,bucketValue,colorscalePassed):
     fig.show()
 
 if __name__ == '__main__':
+    ## Update the underlying data first
+    os.system('cd covid-19-data/ && git pull')
+    ## Now run
     main()
