@@ -9,7 +9,7 @@ cycler==0.10.0
 descartes==1.1.0
 Fiona==1.8.13.post1
 geopandas==0.3.0
-idna==2.9
+idna==3.7
 kiwisolver==1.1.0
 matplotlib==3.2.1
 munch==2.5.0
